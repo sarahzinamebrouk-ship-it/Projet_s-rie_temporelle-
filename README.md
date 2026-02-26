@@ -7,13 +7,13 @@ L'objectif est d'analyser les dynamiques sectorielles contrastées et de propose
 
 # II. Données : Valeurs annuelles de l'IPI (Insee) sur la période 1990-2024.
 
-Secteurs étudiés : * Automobile : Secteur très cyclique et volatil.
+Secteurs étudiés : 
 
 **Pharmacie** : Secteur stable avec une croissance régulière.
 
 **Énergie** : Trajectoire intermédiaire, choisie pour la modélisation approfondie en raison de ses propriétés statistiques.
 
-**Secteur Automobile** : C’est le secteur le plus critique de l’étude. Il présente une tendance structurelle à la baisse depuis le début des années 2000. Très vulnérable aux chocs conjoncturels (crise de 2008, Covid-19), il illustre les défis de la désindustrialisation et de la perte de compétitivité du secteur en France.
+**Secteur Automobile** ( secteur cyclique et volatil) : C’est le secteur le plus critique de l’étude. Il présente une tendance structurelle à la baisse depuis le début des années 2000. Très vulnérable aux chocs conjoncturels (crise de 2008, Covid-19), il illustre les défis de la désindustrialisation et de la perte de compétitivité du secteur en France.
 
 # III. Méthodologie
 
