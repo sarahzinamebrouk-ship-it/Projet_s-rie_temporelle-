@@ -1,17 +1,17 @@
 # Projet_s-rie_temporelle-
 
-# Présentation du Projet
+# I. Présentation du Projet
 
 L'objectif est d'analyser les dynamiques sectorielles contrastées et de proposer des prévisions à court terme en utilisant des modèles de séries temporelles.
 
 
-# Données : Valeurs annuelles de l'IPI (Insee) sur la période 1990-2024.
+# II. Données : Valeurs annuelles de l'IPI (Insee) sur la période 1990-2024.
 
 Secteurs étudiés : * Automobile : Secteur très cyclique et volatil.
 **Pharmacie** : Secteur stable avec une croissance régulière.
 **Énergie** : Trajectoire intermédiaire, choisie pour la modélisation approfondie en raison de ses propriétés statistiques.
 
-# Méthodologie
+# III. Méthodologie
 
 **Analyse Exploratoire**  : Étude de la stationnarité via le test de Dickey-Fuller (ADF) et analyse des corrélogrammes (ACF/PACF).
 
@@ -21,7 +21,7 @@ Secteurs étudiés : * Automobile : Secteur très cyclique et volatil.
 
 **Validation :** Test de Ljung-Box pour s'assurer que les résidus sont un bruit blanc (absence d'information non capturée).
 
-# Résultats et Prévisions
+# IV Résultats et Prévisions
 
 L'analyse de l'Indice de la Production Industrielle (IPI) entre 1990 et 2024 a permis de dégager trois conclusions majeures :
 
@@ -49,7 +49,7 @@ Les projections pour les 4 prochaines années suggèrent :Une croissance modér�
 **Point économique important** : Les résultats soulignent que, bien que la production industrielle montre des signes de résilience, elle reste conditionnée par un environnement macroéconomique incertain et des transformations structurelles en cours.
 
 
-# Limites
+# V. Limites
 Bien que le modèle ARIMA(1,1,1) soit robuste pour l'analyse de court terme, l'étude présente plusieurs limites importantes à prendre en compte :
 
 **1.Nature univariée du modèle**: La modélisation repose uniquement sur le passé de la série (auto-corrélation).
