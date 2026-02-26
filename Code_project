@@ -1,0 +1,339 @@
+# SERIES TEMPORELLES
+rm(list=ls())
+
+ls()
+
+# Librairies
+library(forecast)
+library(urca)
+
+# Charger les données
+Ipi_data <- read.csv2(
+  "C:/Users/sarah/OneDrive/Bureau/M1-APE/Série temporelle/Projet serie tempo/famille_IPI-2021_17012026(2)/valeurs_annuelles.csv",
+  stringsAsFactors = FALSE,
+  fileEncoding = "latin1"
+)
+
+head(Ipi_data)
+names(Ipi_data)
+
+# Extraire les valeurs pour prod_ind_ener
+valeurs_ener <- Ipi_data$Valeurs[Ipi_data$Sect_ind == "prod_ind_ener"]
+valeurs_ener <- trimws(valeurs_ener)          # permet de supprimer les espaces
+valeurs_ener <- gsub(",", ".", valeurs_ener)  # effectue changement de  virgules par points
+prod_ind_ener <- as.numeric(valeurs_ener)     # permet la convertion des valeurs en numérique
+
+
+# Vérifier
+str(prod_ind_ener)
+head(prod_ind_ener)
+
+
+
+# Extraire les valeurs pour prod_ind_pharma
+valeurs_pharma <- Ipi_data$Valeurs[Ipi_data$Sect_ind == "prod_ind_pharma"]
+valeurs_pharma <- trimws(valeurs_pharma)
+valeurs_pharma <- gsub(",", ".", valeurs_pharma)
+prod_ind_pharma <- as.numeric(valeurs_pharma)
+
+# Vérifier
+str(prod_ind_pharma)
+head(prod_ind_pharma)
+
+
+# Extraire les valeurs pour prod_ind_auto
+valeurs_auto <- Ipi_data$Valeurs[Ipi_data$Sect_ind == "prod_ind_auto"]
+valeurs_auto <- trimws(valeurs_auto)
+valeurs_auto <- gsub(",", ".", valeurs_auto)
+prod_ind_auto <- as.numeric(valeurs_auto)
+
+# Vérifier
+str(prod_ind_auto)# Permet l'affichage de la structure ou composition de la série
+head(prod_ind_auto) # Il permet l'affichage des 6 premières variables de la série
+
+
+
+
+# prod_ind_ener : représente la série temporelle pour le secteur de l'énergie
+# prod_ind_auto: représente la série temporelle pour le secteur de l'automobile
+# prod_ind_pharma: représente la série temporelle pour le secteur pharmaceutique
+# start = 1990 => Signifie quela première observation correspond à l'année 1990
+# frequency = 1 => Soit ici,la fréquence annuelle (1 observation par an)
+
+prod_ind_ener <- ts(prod_ind_ener, start = 1990, frequency = 1)
+prod_ind_auto <- ts(prod_ind_auto, start = 1990, frequency = 1)
+prod_ind_pharma <- ts(prod_ind_pharma, start = 1990, frequency = 1)
+
+
+# Logarithme ( Energie)
+lsp_ener <- log(prod_ind_ener)
+# Logarithme ( Pharmacie)
+lsp_pharma <- log(prod_ind_pharma)
+# Logarithme ( Automobile)
+lsp_auto <- log(prod_ind_auto)
+
+# Configuration graphique : 2 lignes, 1 colonne
+par(mfrow = c(2,1))
+
+# Énergie
+ener_ts <- ts(prod_ind_ener, start=1990, frequency=1)
+plot(ener_ts, main="Énergie (Données BRUTES)", ylab="IPI secteur de l'énergie", col=" blue")
+
+# Autres visualisation ( Automobiles)
+auto_ts <- ts(prod_ind_auto, start=1990, frequency=1)
+plot(auto_ts, main="Automobiles (Données BRUTES)", ylab="IPI secteur de l'automobile", col=" blue")
+
+# SECTEUR PHARMACEUTIQUE
+
+# Pharmaceutique
+# Plot
+pharma_ts <- ts(prod_ind_pharma, start=1990, frequency=1)
+plot(prod_ind_pharma, main="Pharmaceutique (Données BRUTES)", ylab="IPI secteur pharmaceutique", col="blue")
+
+
+
+#### AUTRE VISUALISATION PERMETTANT D'OBSERVER LES TENDANCES DE L ENERGIE ET AUTOMOBILE
+plot(prod_ind_ener,
+     col = "brown",
+     type = "o",
+     ylim = range(c(prod_ind_ener, prod_ind_auto), na.rm = TRUE),
+     main = "Production industrielle annuelle : énergie et automobile (1990–2024)",
+     ylab = "IPI production industrielle",
+     xlab = "Year")
+
+lines(prod_ind_auto,
+      col = "blue",
+      type = "o")
+
+
+#### AUTRE VISUALISATON PERMETTANT D'OBSERVER LES TENDANCES SECTEUR ENERGIE ET PHARMACEUTIQUE 
+plot(prod_ind_ener,
+     col = "brown",
+     type = "o",
+     ylim = range(c(prod_ind_ener, prod_ind_pharma), na.rm = TRUE),
+     main = "Production industrielle annuelle : énergie et pharmaceutique (1990–2024)",
+     ylab = "IPI production industrielle",
+     xlab = "Year")
+
+lines(prod_ind_pharma,
+      col = "blue",
+      type = "o")
+
+
+####AUTRE VISUALISATION PERMETTANT D'OBSERVER LES TENDANCES SECTEUR DE L'AUTOMOBILE ET PHARMACEUTIQUE
+plot(prod_ind_auto,
+     col = "brown",
+     type = "o",
+     ylim = range(c(prod_ind_auto, prod_ind_pharma), na.rm = TRUE),
+     main = "Production industrielle annuelle : Automobile  et pharmaceutique (1990–2024)",
+     ylab = "IPI production industrielle",
+     xlab = "Year")
+
+lines(prod_ind_pharma,
+      col = "blue",
+      type = "o")
+
+
+
+# 2. Etude de la stationnarité 
+
+# Plot ACF and PACF (secteur de l'automobile)
+par(mfrow=c(1,2))
+acf(lsp_auto, lag.max = 50)
+pacf(lsp_auto, lag.max = 50)
+
+# Graphiques
+par(mfrow = c(2,1))
+plot(prod_ind_auto, col=6, main="IPI – données brutes ( automobile")
+plot(lsp_auto, col=2, main="IPI – transformation logarithmique (automobile)"
+
+
+#Plot ACF and PACF ( secteur de l'énergie)
+par(mfrow=c(1,2))
+acf(lsp_ener, lag.max = 50)
+pacf(lsp_ener, lag.max = 50)
+
+# Graphiques
+par(mfrow = c(2,1))
+plot(prod_ind_ener, col=6, main="IPI – données brutes (énergie)")
+plot(lsp_ener, col=2, main="IPI – transformation logarithmique (énergie)")
+
+
+##Plot ACF and PACF ( secteur pharmaceutique)
+par(mfrow=c(1,2))
+acf(lsp_pharma, lag.max = 50)
+pacf(lsp_pharma, lag.max = 50)
+
+# Graphiques
+par(mfrow = c(2,1))
+plot(prod_ind_pharma, col=6, main="IPI – données brutes (pharmaceutique)")
+plot(lsp_pharma, col=2, main="IPI – transformation logarithmique (pharmaceutique)")
+
+
+# Tests de stationnarité (ADF) dans le secteur de l'automobile
+auto_adft <- ur.df(lsp_auto, type = "trend", selectlags = "AIC")
+summary(auto_adft)
+auto_adfd <- ur.df(lsp_auto, type = "drift", selectlags = "AIC")
+summary(auto_adfd)
+auto_adf <- ur.df(lsp_auto, type = "none", selectlags = "AIC")
+summary(auto_adf)
+
+
+#Tests de stationnarité (ADF) dans le secteur de l'Énergie
+ener_adft <- ur.df(lsp_ener, type = "trend", selectlags = "AIC")
+summary(ener_adft)
+ener_adfd <- ur.df(lsp_ener, type = "drift", selectlags = "AIC")
+summary(ener_adfd)
+ener_adf <- ur.df(lsp_ener, type = "none", selectlags = "AIC")
+summary(ener_adf)
+
+#Tests de stationnarité (ADF) dans le secteur pharmaceutique 
+pharma_adft <- ur.df(lsp_pharma, type = "trend", selectlags = "AIC")
+summary(pharma_adft)
+pharma_adfd <- ur.df(lsp_pharma, type = "drift", selectlags = "AIC")
+summary(pharma_adfd)
+pharma_adf <- ur.df(lsp_pharma, type = "none", selectlags = "AIC")
+summary(pharma_adf)
+
+
+
+# Différenciation de la série (Énergie)
+# On calcule la différence première pour stationnariser la série
+ener_ret = diff(lsp_ener) 
+
+# Représentation graphique de la série différenciée
+# Plot la série différencié (Energie)
+plot(ener_ret, xaxt = "n", col = 4, 
+     main = "IPI Énergie - Variations annuelles(Log-diff)", 
+     ylab = "Variations")
+
+# Adaptation des dates : on commence en 1990 jusqu'à 2024
+# seq(1990, 2024, by = 5) permet d'afficher un repère tous les 5 ans
+axis(1, at = seq(1990, 2024, by = 5), labels = seq(1990, 2024, by = 5))
+
+# Ajout des lignes de repère pour la lisibilité
+abline(v = seq(1990, 2024, by = 5), col = "lightgray", lty = "dotted")
+grid(nx = NA, ny = NULL, col = " lightgray", lty = "dotted")
+
+
+# Différenciation de la série (Automobile)
+# On calcule la différence première pour stationnariser la série
+auto_ret = diff(lsp_auto) 
+
+# Représentation graphique de la série différenciée
+# Plot la série différencié (Automobile)
+plot(auto_ret, xaxt = "n", col = 4, 
+     main = "IPI automobile - Variations annuelles(Log-diff)", 
+     ylab = "Variations")
+# Adaptation des dates : on commence en 1990 jusqu'à 2024
+# seq(1990, 2024, by = 5) permet d'afficher un repère tous les 5 ans
+axis(1, at = seq(1990, 2024, by = 5), labels = seq(1990, 2024, by = 5))
+
+# Ajout des lignes de repère pour la lisibilité
+abline(v = seq(1990, 2024, by = 5), col = "lightgray", lty = "dotted")
+grid(nx = NA, ny = NULL, col = " lightgray", lty = "dotted")
+
+
+# Différenciation de la série (Pharmaceutique)
+# On calcule la différence première pour stationnariser la série
+pharma_ret = diff(lsp_pharma)
+
+# Représentation graphique de la série différenciée
+# Plot la série différencié (Pharmaceutique)
+plot(pharma_ret, xaxt = "n", col = 4, 
+     main = "IPI pharmaceutique - Variations annuelles(Log-diff)", 
+     ylab = "Variations")
+# Adaptation des dates : on commence en 1990 jusqu'à 2024
+# seq(1990, 2024, by = 5) permet d'afficher un repère tous les 5 ans
+axis(1, at = seq(1990, 2024, by = 5), labels = seq(1990, 2024, by = 5))
+
+# Ajout des lignes de repère pour la lisibilité
+abline(v = seq(1990, 2024, by = 5), col = "lightgray", lty = "dotted")
+grid(nx = NA, ny = NULL, col = " lightgray", lty = "dotted")
+
+
+# Tester la stationnarité avec ADF (secteur de l'énergie)
+ener_adf <- ur.df(lsp_ener, type = "drift", selectlags = "AIC")
+summary(ener_adf)
+if (ener_adf@teststat[1] > ener_adf@cval[1,2]) print("La série n'est pas stationnaire !") else print("La série est stationnaire !")
+
+
+# Tester la stationnarité avec ADF ( secteur pharmaceutique)
+pharma_adf <- ur.df(lsp_pharma, type = "drift", selectlags = "AIC")
+summary(pharma_adf)
+if (pharma_adf@teststat[1] > pharma_adf@cval[1,2]) print("La série n'est pas stationnaire !") else print("La série est stationnaire !")
+
+# Tester la stationnarité avec ADF ( secteur automobile)
+auto_adf <- ur.df(lsp_auto, type = "drift", selectlags = "AIC")
+summary(auto_adf)
+if (auto_adf@teststat[1] > auto_adf@cval[1,2]) print("La série n'est pas stationnaire !") else print("La série est stationnaire !")
+
+
+
+#Identification du modèle
+# ACF et PACF de la série différenciée 
+par(mfrow=c(1,2))
+acf(ener_ret, lag.max = 50)
+pacf(ener_ret, lag.max = 50)
+
+
+#Estimation des modèles
+# AR(1) et MA(1)
+ener_ret_ar1 <- arima(ener_ret, order = c(1, 0, 0))      # AR(1)
+ener_ret_ma1 <- arima(ener_ret, order = c(0, 0, 1))      # MA(1) 
+
+
+# ARMA(1,1)
+ener_ret_arma11 <- arima(ener_ret, order = c(1, 0 ,1), method = "CSS-ML")      # ARMA(1,1)
+
+#Diagnostic et validation des modèles
+tsdiag(ener_ret_ar1)
+tsdiag(ener_ret_ma1)
+tsdiag(ener_ret_arma11)
+
+# 6. Selection des modèles
+summary(ener_ret_ar1)
+summary(ener_ret_ma1)
+summary(ener_ret_arma11)
+
+
+# Prévision à court terme ( 2 à 4 périodes selon la fréquences)=> Domaine de l'énergie
+n_périodes = 4 
+
+# Prévision de la série différenciée (les variations) => Secteur energie
+plot(forecast(ener_ret_arma11, h = n_périodes), 
+     main = "Prévision des variations (h=4)")
+
+# Prévision de la série en niveau (le Log de l'IPI)
+# On utilise ARIMA(1,1,1)
+# On fixe l'horizon de prévision à 4 ans
+
+ n<- 4
+#le modèle Arima (1,1,1)
+modele_ener <- arima(lsp_ener, order = c(1,1,1))
+
+prev_energie <- forecast(modele_ener, h = n)
+
+#Graphique 
+
+plot(prev_energie, main = "Prévision à 4 ans de l'IPI Énergie", ylab = "IPI correspondant", xlab = "Années", col = "darkgreen")
+
+#Retour au niveau
+
+prev_niv_energie <- exp(prev_energie$mean)
+
+#Tableau des prévisions
+
+annees_prev <- time(prev_niv_energie)
+prevision_energie <- data.frame( Annee = round(annees_prev), IPI_prevu = as.numeric(prev_niv_energie) )
+print(prevision_energie)
+
+
+
+ 
+
+
+
+
+
+
