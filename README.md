@@ -14,8 +14,11 @@ Secteurs étudiés : * Automobile : Secteur très cyclique et volatil.
 # Méthodologie
 
 **Analyse Exploratoire**  : Étude de la stationnarité via le test de Dickey-Fuller (ADF) et analyse des corrélogrammes (ACF/PACF).
+
 **Modélisation**  : Sélection et estimation d'un modèle ARMA(1,1) pour le secteur de l'énergie, jugé le plus adapté après différenciation logarithmique.
+
 **Estimation :** Sélection du modèle **ARIMA(1,1,1)** (ou ARMA(1,1) sur la série différenciée) basé sur les critères AIC/BIC.
+
 **Validation :** Test de Ljung-Box pour s'assurer que les résidus sont un bruit blanc (absence d'information non capturée).
 
 # Résultats et Prévisions
